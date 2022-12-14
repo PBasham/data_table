@@ -93,5 +93,15 @@ td {
 tbody tr:nth-child(2n) {
     background-color: rgb(243, 243, 243);
 }
+.data-table-footer {
+    display: flex;
+    justify-content: space-between;
+    
+    margin-bottom: 1em;
+    padding-top: 1em;
+}
 .data-table-info {
+}
+.data-table-page {
+    display: flex;
 }
