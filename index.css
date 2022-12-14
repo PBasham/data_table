@@ -58,7 +58,7 @@ video {
 table {
     border-collapse: collapse;
 }
-/* Select every other row for styling */
+
 th {
     position: relative;
 
@@ -67,23 +67,43 @@ th {
     font-weight: bold;
     text-align: left;
 }
-
-thead th:before {
-    content: "^";
-
-    position: absolute;
-    right: 0;
+.header {
+    display: flex;
+    justify-content: space-between;
 }
+/* ---------------------------------------- */
+.filter-arrows {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+.arrow-up {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+
+    border-bottom: 5px solid grey;
+}
+
+.arrow-down {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+
+    border-top: 5px solid grey;
+}
+
+
+/* ---------------------------------------- */
 tbody {
     border-top: 1px solid black;
     border-bottom: 1px solid black;
 }
-/* tbody tr:first-child {
-    border-top: 10px solid black;
-} */
 
 tbody tr:not(:last-child) {
-    border-bottom: 1px solid rgb(222,222,222);
+    border-bottom: 1px solid rgb(222, 222, 222);
 }
 
 td {
@@ -93,24 +113,27 @@ td {
 tbody tr:nth-child(2n) {
     background-color: rgb(243, 243, 243);
 }
+
 .data-table-footer {
     display: flex;
     justify-content: space-between;
-    
+
     margin-bottom: 1em;
     padding-top: 1em;
 }
-.data-table-info {
-}
+
+.data-table-info {}
+
 #pageNumberDiv {
     display: flex;
 }
+
 #page-numbers {
     display: flex;
 }
 
 .btn {
-    
+
     margin: .2em;
     padding: 10px;
     height: 40px;
@@ -118,11 +141,12 @@ tbody tr:nth-child(2n) {
     border: none;
     border-radius: 3px;
     background-color: transparent;
-    
+
 
 }
+
 .btn:not(.active):hover {
-    background: linear-gradient(black, grey);   
+    background: linear-gradient(black, grey);
 
     color: white;
     /* font-weight: bold; */
@@ -131,9 +155,11 @@ tbody tr:nth-child(2n) {
 #btn-previous {
     width: 100px;
 }
+
 #btn-next {
     width: 50px;
 }
+
 .active {
     border: 1px solid rgb(163, 163, 163);
     background: linear-gradient(white, rgb(211, 209, 209));
