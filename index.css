@@ -105,3 +105,36 @@ tbody tr:nth-child(2n) {
 #pageNumberDiv {
     display: flex;
 }
+#page-numbers {
+    display: flex;
+}
+
+.btn {
+    
+    margin: .2em;
+    padding: 10px;
+    height: 40px;
+    aspect-ratio: 1;
+    border: none;
+    border-radius: 3px;
+    background-color: transparent;
+    
+
+}
+.btn:not(.active):hover {
+    background: linear-gradient(black, grey);   
+
+    color: white;
+    /* font-weight: bold; */
+}
+
+#btn-previous {
+    width: 100px;
+}
+#btn-next {
+    width: 50px;
+}
+.active {
+    border: 1px solid rgb(163, 163, 163);
+    background: linear-gradient(white, rgb(211, 209, 209));
+}

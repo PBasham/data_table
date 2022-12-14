@@ -30,7 +30,7 @@ $(document).ready(() => {
 
     updateInfo(exampleTable, startRange, endRange, showingFrom, showingTo, totalCount)
     showData(exampleTable, startRange, endRange)
-    getPageNumbers(pageNumberDiv, tableLength.val(), exampleTable.length)
+    getPageNumbers(pageNumberDiv, tableLength.val(), exampleTable.length, currentPage)
     
     
     // Event Listeners --------------------------------------------------
@@ -40,7 +40,7 @@ $(document).ready(() => {
         endRange = tableLength.val()
         updateInfo(exampleTable, startRange, endRange, showingFrom, showingTo, totalCount)
         showData(exampleTable, startRange, endRange)
-        getPageNumbers(pageNumberDiv, endRange, exampleTable.length)
+        getPageNumbers(pageNumberDiv, endRange, exampleTable.length, currentPage)
     })
     // page change
     // startRange should equal page * showLength - showLength + 1
@@ -52,16 +52,6 @@ $(document).ready(() => {
 })
 
 // functions --------------------------------------------------
-const getPageNumbers = (div, showLength, total) => {
-    console.log("I'm in here")
-    div.html(`<button id="btn-previous">Previous</button>`)
-    for (let i = 1; i <= Math.ceil(total / showLength); i++) {
-        console.log(`<p class="page-btn" >${i}</p>`)
-        div.append(`<p class="page-btn" >${i}</p>`)
-    }
-    div.append(`<button id="btn-previous">Previous</button>`)
-
-}
 const updateInfo = (table, startRange, endRange, from, to, total) => {
     from.html(startRange)
     to.html(endRange > table.length ? table.length : endRange)
@@ -75,4 +65,12 @@ const showData = (table, start, end) => {
             table[i].style.display = "none"
         }
     }
+}
+const getPageNumbers = (div, showLength, total, activePage) => {
+    div.html(`<button id="btn-previous" class="btn" >Previous</button>`)
+    for (let i = 1; i <= Math.ceil(total / showLength); i++) {
+        console.log(`<button class="page-btn btn" >${i}</button>`)
+        div.append(`<button class="page-btn btn ${i === activePage ? "active" : ""}" >${i}</button>`)
+    }
+    div.append(`<button id="btn-next" class="btn" >Next</button>`)
 }
