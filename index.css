@@ -1,0 +1,97 @@
+/* ==== CSS RESET ==================== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+
+    font: inherit;
+}
+
+html {
+    /* color-scheme: light dark; */
+}
+
+body {
+    min-height: 100vh;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}
+
+img,
+picture,
+svg,
+video {
+    display: block;
+
+    max-width: 100%;
+}
+
+/**
+* thead
+    * Bold and sizeup font
+    * Add before/after elements for filter buttons on each thead
+* tbody
+    * border on top and button
+    * light boarder between each entry
+*/
+.data-table-wrapper {
+
+    margin: auto;
+    width: clamp(375px, 80%, 1000px);
+
+    /* outline: 1px solid black; */
+}
+
+.data-table-filters-div {
+    display: flex;
+    justify-content: space-between;
+}
+
+#search-label {}
+
+table {
+    border-collapse: collapse;
+}
+/* Select every other row for styling */
+th {
+    position: relative;
+
+    padding: 10px;
+
+    font-weight: bold;
+    text-align: left;
+}
+
+thead th:before {
+    content: "^";
+
+    position: absolute;
+    right: 0;
+}
+tbody {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+/* tbody tr:first-child {
+    border-top: 10px solid black;
+} */
+
+tbody tr:not(:last-child) {
+    border-bottom: 1px solid rgb(222,222,222);
+}
+
+td {
+    padding: 10px;
+}
+
+tbody tr:nth-child(2n) {
+    background-color: rgb(243, 243, 243);
+}
+.data-table-info {
+}
