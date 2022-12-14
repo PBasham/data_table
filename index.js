@@ -31,10 +31,10 @@ $(document).ready(() => {
     updateInfo(exampleTable, startRange, endRange, showingFrom, showingTo, totalCount)
     showData(exampleTable, startRange, endRange)
     getPageNumbers(pageNumberDiv, tableLength.val(), exampleTable.length, currentPage)
-    
-    
+
+
     // Event Listeners --------------------------------------------------
-    
+
     // length change
     tableLength.on("change", () => {
         endRange = tableLength.val()
@@ -47,7 +47,20 @@ $(document).ready(() => {
     // endRange should equal page * showLength
 
     // every time the length changes, update how many pages there are.
+    $(".page-btn").on("click", (e) => {
+        const goToPage = parseInt(e.target.innerText)
+        if (goToPage !== currentPage) {
+            console.log(`change page to ${goToPage}`)
+            // call for page change
 
+            showData(exampleTable, goToPage * tableLength.val() - tableLength.val() + 1, goToPage * tableLength.val())
+            updateInfo(exampleTable, goToPage * tableLength.val() - tableLength.val() + 1, goToPage * tableLength.val(), showingFrom, showingTo, totalCount)
+            currentPage = goToPage
+            $(`.btn`).removeClass(" active ")
+            $(`#btn-${goToPage}`).addClass("active")
+        }
+
+    })
 
 })
 
@@ -59,7 +72,7 @@ const updateInfo = (table, startRange, endRange, from, to, total) => {
 }
 const showData = (table, start, end) => {
     for (let i = 0; i < table.length; i++) {
-        if (i > start && i <= end) {
+        if (i >= start && i <= end) {
             table[i].style.display = ""
         } else {
             table[i].style.display = "none"
@@ -70,7 +83,9 @@ const getPageNumbers = (div, showLength, total, activePage) => {
     div.html(`<button id="btn-previous" class="btn" >Previous</button>`)
     for (let i = 1; i <= Math.ceil(total / showLength); i++) {
         console.log(`<button class="page-btn btn" >${i}</button>`)
-        div.append(`<button class="page-btn btn ${i === activePage ? "active" : ""}" >${i}</button>`)
+        div.append(`<button id="btn-${i}" class="page-btn btn ${i === activePage ? "active" : ""}" >${i}</button>`)
     }
     div.append(`<button id="btn-next" class="btn" >Next</button>`)
 }
+const previousPress = () => {}
+const nextPress = () => {}
