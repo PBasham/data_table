@@ -102,6 +102,6 @@ tbody tr:nth-child(2n) {
 }
 .data-table-info {
 }
-.data-table-page {
+#pageNumberDiv {
     display: flex;
 }

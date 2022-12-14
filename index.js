@@ -21,14 +21,17 @@ $(document).ready(() => {
 
     let showingFrom = $("#showingFrom")
     let showingTo = $("#showingTo")
-    let totalCount = $("#totalCount")
+    let totalCount = $("#totalEntries")
 
     let startRange = 1
     let endRange = tableLength.val()
-
+    let pageNumberDiv = $("#pageNumberDiv")
+    let currentPage = 1
 
     updateInfo(exampleTable, startRange, endRange, showingFrom, showingTo, totalCount)
     showData(exampleTable, startRange, endRange)
+    getPageNumbers(pageNumberDiv, tableLength.val(), exampleTable.length)
+    
     
     // Event Listeners --------------------------------------------------
     
@@ -37,6 +40,7 @@ $(document).ready(() => {
         endRange = tableLength.val()
         updateInfo(exampleTable, startRange, endRange, showingFrom, showingTo, totalCount)
         showData(exampleTable, startRange, endRange)
+        getPageNumbers(pageNumberDiv, endRange, exampleTable.length)
     })
     // page change
     // startRange should equal page * showLength - showLength + 1
@@ -48,9 +52,19 @@ $(document).ready(() => {
 })
 
 // functions --------------------------------------------------
+const getPageNumbers = (div, showLength, total) => {
+    console.log("I'm in here")
+    div.html(`<button id="btn-previous">Previous</button>`)
+    for (let i = 1; i <= Math.ceil(total / showLength); i++) {
+        console.log(`<p class="page-btn" >${i}</p>`)
+        div.append(`<p class="page-btn" >${i}</p>`)
+    }
+    div.append(`<button id="btn-previous">Previous</button>`)
+
+}
 const updateInfo = (table, startRange, endRange, from, to, total) => {
     from.html(startRange)
-    to.html(endRange)
+    to.html(endRange > table.length ? table.length : endRange)
     total.html(table.length)
 }
 const showData = (table, start, end) => {
