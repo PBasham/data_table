@@ -17,6 +17,8 @@ $(document).ready(() => {
 
     let tableLength = $("#table-length")
 
+    let table = $("#example")
+    let tableBody = $("#example tbody")
     let exampleTable = $("#example tbody tr")
 
     let showingFrom = $("#showingFrom")
@@ -28,9 +30,17 @@ $(document).ready(() => {
     let pageNumberDiv = $("#pageNumberDiv")
     let currentPage = 1
 
+    // sort,
+    sortName(tableBody)
+    // filter,
+    showData(tableBody, startRange, endRange)
+    //
     updateInfo(exampleTable, startRange, endRange, showingFrom, showingTo, totalCount)
-    showData(exampleTable, startRange, endRange)
+    //
     getPageNumbers(pageNumberDiv, tableLength.val(), exampleTable.length, currentPage)
+    //
+
+
 
 
     // Event Listeners --------------------------------------------------
@@ -39,21 +49,34 @@ $(document).ready(() => {
     tableLength.on("change", () => {
         endRange = tableLength.val()
         updateInfo(exampleTable, startRange, endRange, showingFrom, showingTo, totalCount)
-        showData(exampleTable, startRange, endRange)
-        getPageNumbers(pageNumberDiv, endRange, exampleTable.length, currentPage)
-    })
-    // page change
-    // startRange should equal page * showLength - showLength + 1
-    // endRange should equal page * showLength
+        showData(tableBody, startRange, endRange)
+        // every time the length changes, update how many pages there are.
+        getPageNumbers(pageNumberDiv, endRange, exampleTable.length, 1)
 
-    // every time the length changes, update how many pages there are.
+        $(".page-btn").on("click", (e) => {
+            const goToPage = parseInt(e.target.innerText)
+            if (goToPage !== currentPage) {
+                console.log(`change page to ${goToPage}`)
+                // call for page change
+
+                showData(tableBody, goToPage * tableLength.val() - tableLength.val() + 1, goToPage * tableLength.val())
+                updateInfo(exampleTable, goToPage * tableLength.val() - tableLength.val() + 1, goToPage * tableLength.val(), showingFrom, showingTo, totalCount)
+                currentPage = goToPage
+                $(`.btn`).removeClass(" active ")
+                $(`#btn-${goToPage}`).addClass("active")
+            }
+
+        })
+    })
+
+    // page change
     $(".page-btn").on("click", (e) => {
         const goToPage = parseInt(e.target.innerText)
         if (goToPage !== currentPage) {
             console.log(`change page to ${goToPage}`)
             // call for page change
 
-            showData(exampleTable, goToPage * tableLength.val() - tableLength.val() + 1, goToPage * tableLength.val())
+            showData(tableBody, goToPage * tableLength.val() - tableLength.val() + 1, goToPage * tableLength.val())
             updateInfo(exampleTable, goToPage * tableLength.val() - tableLength.val() + 1, goToPage * tableLength.val(), showingFrom, showingTo, totalCount)
             currentPage = goToPage
             $(`.btn`).removeClass(" active ")
@@ -65,19 +88,19 @@ $(document).ready(() => {
 })
 
 // functions --------------------------------------------------
+const showData = (table, start, end) => {
+    table.find("tr").each((idx, currentRow) => {
+        if (idx + 1 >= start && idx + 1 <= end) {
+            currentRow.style.display = ""
+        } else {
+            currentRow.style.display = "none"
+        }
+    })
+}
 const updateInfo = (table, startRange, endRange, from, to, total) => {
     from.html(startRange)
     to.html(endRange > table.length ? table.length : endRange)
     total.html(table.length)
-}
-const showData = (table, start, end) => {
-    for (let i = 0; i < table.length; i++) {
-        if (i >= start && i <= end) {
-            table[i].style.display = ""
-        } else {
-            table[i].style.display = "none"
-        }
-    }
 }
 const getPageNumbers = (div, showLength, total, activePage) => {
     div.html(`<button id="btn-previous" class="btn" >Previous</button>`)
@@ -87,5 +110,22 @@ const getPageNumbers = (div, showLength, total, activePage) => {
     }
     div.append(`<button id="btn-next" class="btn" >Next</button>`)
 }
-const previousPress = () => {}
-const nextPress = () => {}
+const previousPress = () => { }
+const nextPress = () => { }
+
+
+
+
+// Sorting --------------------------------------------------
+const sortName = (tableBody) => {
+
+    tableBody.find("tr").sort((a, b) => {
+        {
+            return $('td:first', a).text().localeCompare($('td:first', b).text());
+        }
+        //    else 
+        //    {
+        //     return $('td:first', b).text().localeCompare($('td:first', a).text());
+        //    }
+    }).appendTo(tableBody)
+}

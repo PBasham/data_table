@@ -83,7 +83,7 @@ th {
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
 
-    border-bottom: 5px solid grey;
+    border-bottom: 5px solid rgb(188, 188, 188);
 }
 
 .arrow-down {
@@ -92,10 +92,14 @@ th {
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
 
-    border-top: 5px solid grey;
+    border-top: 5px solid rgb(188, 188, 188);
 }
-
-
+.arrow-up.sort-asc {
+border-bottom-color: black;
+}
+.arrow-down.sort-desc {
+    border-bottom-color: black;
+}
 /* ---------------------------------------- */
 tbody {
     border-top: 1px solid black;
