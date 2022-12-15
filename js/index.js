@@ -33,16 +33,47 @@ $(document).ready(() => {
 
 
     let sortingMethod = "#header-name"
+    
+    $(".header").on("click", (e) => {
+        handleSort(`#${$(e.currentTarget).attr("id")}`)
+    })
 
+    // sort,
+    sortName(tableBody)
+    // filter,
+    showData(tableBody, startRange, endRange)
+    // update footer detail
+    updateInfo(exampleTable, startRange, endRange, showingFrom, showingTo, totalCount)
+    // set page numbers
+    getPageNumbers(pageNumberDiv, tableLength.val(), exampleTable.length, currentPage)
+    //
+    setPageBtnEvent(exampleTable, tableBody, currentPage, tableLength.val(), showingFrom, showingTo, totalCount)
+
+
+
+    // Event Listeners --------------------------------------------------
+
+    
+
+    // length change
+    tableLength.on("change", () => {
+        endRange = tableLength.val()
+        updateInfo(exampleTable, startRange, endRange, showingFrom, showingTo, totalCount)
+        showData(tableBody, startRange, endRange)
+        // every time the length changes, update how many pages there are.
+        getPageNumbers(pageNumberDiv, endRange, exampleTable.length, 1)
+
+        setPageBtnEvent(exampleTable, tableBody, currentPage, tableLength.val(), showingFrom, showingTo, totalCount)
+    })
+
+    // Sorting --------------------------------------------------
     const handleSort = (sortMethod) => {
         let sortType = "asc"
         console.log(sortMethod)
-        // console.log()
+        // unhide everything before sort
         $(`tbody tr`).each((idx, currentRow) => {
             currentRow.style.display = ""
         })
-        // unhide everything
-        console.log(sortMethod === sortingMethod)
         if (sortMethod === sortingMethod) {
             if ($(`${sortMethod} div`).hasClass("sort-asc")) {
                 sortType = "desc"
@@ -57,13 +88,11 @@ $(document).ready(() => {
             sortingMethod = sortMethod
             $(".sort-asc").removeClass("sort-asc")
             $(".sort-desc").removeClass("sort-desc")
-            console.log($(`${sortMethod} div`))
             $(`${sortMethod} div`).addClass("sort-asc")
         }
 
-
+        // sort everything
         if (sortingMethod === "#header-name") {
-            console.log("Sorting by name ", sortType)
             sortName(tableBody, sortType)
         } else if (sortMethod === "#header-position") {
             sortPosition(tableBody, sortType)
@@ -79,66 +108,15 @@ $(document).ready(() => {
 
         // re-hide everything
         showData(tableBody, startRange, endRange)
+        // update page number
+        getPageNumbers(pageNumberDiv, tableLength.val(), exampleTable.length, 1)
+        // update footer detail
+        updateInfo(exampleTable, 1, tableLength.val(), showingFrom, showingTo, totalCount)
+
+        setPageBtnEvent(exampleTable, tableBody, currentPage, tableLength.val(), showingFrom, showingTo, totalCount)
+
     }
     
-    $(".header").on("click", (e) => {
-        handleSort(`#${$(e.currentTarget).attr("id")}`)
-    })
-
-    // sort,
-    sortName(tableBody)
-    // filter,
-    showData(tableBody, startRange, endRange)
-    // update footer detail
-    updateInfo(exampleTable, startRange, endRange, showingFrom, showingTo, totalCount)
-    // set page numbers
-    getPageNumbers(pageNumberDiv, tableLength.val(), exampleTable.length, currentPage)
-    //
-
-
-
-
-    // Event Listeners --------------------------------------------------
-
-    // length change
-    tableLength.on("change", () => {
-        endRange = tableLength.val()
-        updateInfo(exampleTable, startRange, endRange, showingFrom, showingTo, totalCount)
-        showData(tableBody, startRange, endRange)
-        // every time the length changes, update how many pages there are.
-        getPageNumbers(pageNumberDiv, endRange, exampleTable.length, 1)
-
-        $(".page-btn").on("click", (e) => {
-            const goToPage = parseInt(e.target.innerText)
-            if (goToPage !== currentPage) {
-                console.log(`change page to ${goToPage}`)
-                // call for page change
-
-                showData(tableBody, goToPage * tableLength.val() - tableLength.val() + 1, goToPage * tableLength.val())
-                updateInfo(exampleTable, goToPage * tableLength.val() - tableLength.val() + 1, goToPage * tableLength.val(), showingFrom, showingTo, totalCount)
-                currentPage = goToPage
-                $(`.btn`).removeClass(" active ")
-                $(`#btn-${goToPage}`).addClass("active")
-            }
-
-        })
-    })
-
-    // page change
-    $(".page-btn").on("click", (e) => {
-        const goToPage = parseInt(e.target.innerText)
-        if (goToPage !== currentPage) {
-            console.log(`change page to ${goToPage}`)
-            // call for page change
-
-            showData(tableBody, goToPage * tableLength.val() - tableLength.val() + 1, goToPage * tableLength.val())
-            updateInfo(exampleTable, goToPage * tableLength.val() - tableLength.val() + 1, goToPage * tableLength.val(), showingFrom, showingTo, totalCount)
-            currentPage = goToPage
-            $(`.btn`).removeClass(" active ")
-            $(`#btn-${goToPage}`).addClass("active")
-        }
-
-    })
 
 })
 
@@ -163,14 +141,30 @@ const getPageNumbers = (div, showLength, total, activePage) => {
         div.append(`<button id="btn-${i}" class="page-btn btn ${i === activePage ? "active" : ""}" >${i}</button>`)
     }
     div.append(`<button id="btn-next" class="btn" >Next</button>`)
+
+    
 }
 const previousPress = () => { }
 const nextPress = () => { }
 
 
-
+const setPageBtnEvent = (table, tableBody, currentPage, tableLength, from, to, total) => {
+    $(".page-btn").on("click", (e) => {
+        const goToPage = parseInt(e.target.innerText)
+        if (goToPage !== currentPage) {
+            console.log(`change page to ${goToPage}`)
+            // call for page change
+            showData(tableBody, goToPage * tableLength - tableLength + 1, goToPage * tableLength)
+            updateInfo(table, goToPage * tableLength - tableLength + 1, goToPage * tableLength, from, to, total)
+            currentPage = goToPage
+            $(`.btn`).removeClass(" active ")
+            $(`#btn-${goToPage}`).addClass("active")
+        }
+    })
+}
 
 // Sorting --------------------------------------------------
+
 const sortName = (tableBody, type = "asc") => {
 
     tableBody.find("tr").sort((a, b) => {
