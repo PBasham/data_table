@@ -72,6 +72,34 @@ th {
     justify-content: space-between;
 }
 /* ---------------------------------------- */
+.filter-arrows-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+.filter-arrows-div::before,
+.filter-arrows-div::after {
+    content: "";
+
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+}
+.filter-arrows-div::before {
+    border-bottom: 5px solid rgb(188, 188, 188);
+}
+.filter-arrows-div::after {
+    border-top: 5px solid rgb(188, 188, 188);
+}
+
+.filter-arrows-div.sort-asc::before {
+    border-bottom: 5px solid rgb(91, 91, 91);
+}
+.filter-arrows-div.sort-desc::after {
+    border-top: 5px solid rgb(91, 91, 91);
+}
+
 .filter-arrows {
     display: flex;
     flex-direction: column;

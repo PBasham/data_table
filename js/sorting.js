@@ -12,7 +12,7 @@
 //   {
 //    return $('td:first', b).text().localeCompare($('td:first', a).text());
 //   }
-		
+
 //  }).appendTo(tbody);
 
 // // update sort order value
@@ -27,9 +27,11 @@
 //  }
 // }
 
-// sort name
-//  sort position
-// sort office
-// sort age
-// sort start date
-// sort salary
+/** Sorting Method - ToDO
+  * sort name
+  * sort position
+  * sort office
+  * sort age
+  * sort start date
+  * sort salary 
+ */

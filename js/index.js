@@ -30,13 +30,68 @@ $(document).ready(() => {
     let pageNumberDiv = $("#pageNumberDiv")
     let currentPage = 1
 
+
+
+    let sortingMethod = "#header-name"
+
+    const handleSort = (sortMethod) => {
+        let sortType = "asc"
+        console.log(sortMethod)
+        // console.log()
+        $(`tbody tr`).each((idx, currentRow) => {
+            currentRow.style.display = ""
+        })
+        // unhide everything
+        console.log(sortMethod === sortingMethod)
+        if (sortMethod === sortingMethod) {
+            if ($(`${sortMethod} div`).hasClass("sort-asc")) {
+                sortType = "desc"
+                $(".sort-asc").addClass("sort-desc")
+                $(".sort-asc").removeClass("sort-asc")
+            } else {
+                $(".sort-desc").addClass("sort-asc")
+                $(".sort-desc").removeClass("sort-desc")
+
+            }
+        } else {
+            sortingMethod = sortMethod
+            $(".sort-asc").removeClass("sort-asc")
+            $(".sort-desc").removeClass("sort-desc")
+            console.log($(`${sortMethod} div`))
+            $(`${sortMethod} div`).addClass("sort-asc")
+        }
+
+
+        if (sortingMethod === "#header-name") {
+            console.log("Sorting by name ", sortType)
+            sortName(tableBody, sortType)
+        } else if (sortMethod === "#header-position") {
+            sortPosition(tableBody, sortType)
+        } else if (sortMethod === "#header-office") {
+            sortOffice(tableBody, sortType)
+        } else if (sortMethod === "#header-age") {
+            sortAge(tableBody, sortType)
+        } else if (sortMethod === "#header-start") {
+            sortStartDate(tableBody, sortType)
+        } else if (sortMethod === "#header-salary") {
+            sortSalary(tableBody, sortType)
+        }
+
+        // re-hide everything
+        showData(tableBody, startRange, endRange)
+    }
+    
+    $(".header").on("click", (e) => {
+        handleSort(`#${$(e.currentTarget).attr("id")}`)
+    })
+
     // sort,
     sortName(tableBody)
     // filter,
     showData(tableBody, startRange, endRange)
-    //
+    // update footer detail
     updateInfo(exampleTable, startRange, endRange, showingFrom, showingTo, totalCount)
-    //
+    // set page numbers
     getPageNumbers(pageNumberDiv, tableLength.val(), exampleTable.length, currentPage)
     //
 
@@ -105,7 +160,6 @@ const updateInfo = (table, startRange, endRange, from, to, total) => {
 const getPageNumbers = (div, showLength, total, activePage) => {
     div.html(`<button id="btn-previous" class="btn" >Previous</button>`)
     for (let i = 1; i <= Math.ceil(total / showLength); i++) {
-        console.log(`<button class="page-btn btn" >${i}</button>`)
         div.append(`<button id="btn-${i}" class="page-btn btn ${i === activePage ? "active" : ""}" >${i}</button>`)
     }
     div.append(`<button id="btn-next" class="btn" >Next</button>`)
@@ -117,15 +171,59 @@ const nextPress = () => { }
 
 
 // Sorting --------------------------------------------------
-const sortName = (tableBody) => {
+const sortName = (tableBody, type = "asc") => {
 
     tableBody.find("tr").sort((a, b) => {
-        {
-            return $('td:first', a).text().localeCompare($('td:first', b).text());
+        if (type === "asc") {
+            return $('td:nth-child(1)', a).text().localeCompare($('td:nth-child(1)', b).text());
+        } else {
+            return $('td:nth-child(1)', b).text().localeCompare($('td:nth-child(1)', a).text());
         }
-        //    else 
-        //    {
-        //     return $('td:first', b).text().localeCompare($('td:first', a).text());
-        //    }
+    }).appendTo(tableBody)
+}
+
+const sortPosition = (tableBody, type = "asc") => {
+    tableBody.find("tr").sort((a, b) => {
+        if (type === "asc") {
+            return $('td:nth-child(2)', a).text().localeCompare($('td:nth-child(2)', b).text());
+        } else {
+            return $('td:nth-child(2)', b).text().localeCompare($('td:nth-child(2)', a).text());
+        }
+    }).appendTo(tableBody)
+}
+const sortOffice = (tableBody, type = "asc") => {
+    tableBody.find("tr").sort((a, b) => {
+        if (type === "asc") {
+            return $('td:nth-child(3)', a).text().localeCompare($('td:nth-child(3)', b).text());
+        } else {
+            return $('td:nth-child(3)', b).text().localeCompare($('td:nth-child(3)', a).text());
+        }
+    }).appendTo(tableBody)
+}
+const sortAge = (tableBody, type = "asc") => {
+    tableBody.find("tr").sort((a, b) => {
+        if (type === "asc") {
+            return $('td:nth-child(4)', a).text().localeCompare($('td:nth-child(4)', b).text());
+        } else {
+            return $('td:nth-child(4)', b).text().localeCompare($('td:nth-child(4)', a).text());
+        }
+    }).appendTo(tableBody)
+}
+const sortStartDate = (tableBody, type = "asc") => {
+    tableBody.find("tr").sort((a, b) => {
+        if (type === "asc") {
+            return $('td:nth-child(5)', a).text().localeCompare($('td:nth-child(5)', b).text());
+        } else {
+            return $('td:nth-child(5)', b).text().localeCompare($('td:nth-child(5)', a).text());
+        }
+    }).appendTo(tableBody)
+}
+const sortSalary = (tableBody, type = "asc") => {
+    tableBody.find("tr").sort((a, b) => {
+        if (type === "asc") {
+            return $('td:nth-child(6)', a).text().localeCompare($('td:nth-child(6)', b).text());
+        } else {
+            return $('td:nth-child(6)', b).text().localeCompare($('td:nth-child(6)', a).text());
+        }
     }).appendTo(tableBody)
 }
