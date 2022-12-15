@@ -16,6 +16,7 @@ $(document).ready(() => {
 
 
     let tableLength = $("#table-length")
+    let searchFilter = $("#search")
 
     let table = $("#example")
     let tableBody = $("#example tbody")
@@ -33,8 +34,8 @@ $(document).ready(() => {
 
 
     let sortingMethod = "#header-name"
-    
-    
+
+
 
     // sort,
     sortName(tableBody)
@@ -47,7 +48,17 @@ $(document).ready(() => {
     //
     setPageBtnEventListener(exampleTable, tableBody, currentPage, tableLength.val(), showingFrom, showingTo, totalCount)
 
+    searchFilter.on("keyup", (current) => {
+        let value = searchFilter.val().toLowerCase()
+        // unhide all,
+        // search every row,
+        // if it matches the criteria then 
 
+
+        exampleTable.filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+      }).slice(5).remove();
+    });
 
     //  --------------------------------------------------
     // Event Listeners -----------------------------------
@@ -117,7 +128,7 @@ $(document).ready(() => {
         setPageBtnEventListener(exampleTable, tableBody, currentPage, tableLength.val(), showingFrom, showingTo, totalCount)
 
     }
-    
+
 
 })
 
@@ -153,10 +164,10 @@ const setPageBtnEventListener = (table, tableBody, currentPage, tableLength, fro
     $(".page-btn").on("click", (e) => {
         let goToPage = ""
         if (e.target.innerText === "Next") {
-            if (!$(`#btn-${currentPage + 1 }`).length) return
+            if (!$(`#btn-${currentPage + 1}`).length) return
             goToPage = currentPage + 1
         } else if (e.target.innerText === "Previous") {
-            if (!$(`#btn-${currentPage - 1 }`).length) return
+            if (!$(`#btn-${currentPage - 1}`).length) return
             goToPage = currentPage - 1
         } else {
             goToPage = parseInt(e.target.innerText)
