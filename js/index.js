@@ -1,13 +1,11 @@
 // set up document for js code
 $(document).ready(() => {
 
-
     // search filter  --------------------------------------------------
     let searchFilter = $("#search")
     // current sorting method --------------------------------------------------
     let sortingMethod = "#header-name"
     // table --------------------------------------------------
-    let table = $("#example")
     let tableBody = $("#example tbody")
     let tableRows = $("#example tbody tr")
     // row limite --------------------------------------------------
@@ -22,9 +20,6 @@ $(document).ready(() => {
     let pageNumberDiv = $("#pageNumberDiv")
     let currentPage = 1
 
-
-
-
     // first open setup --------------------------------------------------
     // sort,
     sortName(tableBody)
@@ -36,37 +31,29 @@ $(document).ready(() => {
     getPageNumbers(pageNumberDiv, showLimit.val(), tableRows.length, currentPage)
     // set up event listeners for pge numbers
     setPageBtnEventListener(tableRows, tableBody, currentPage, showLimit.val(), showingFrom, showingTo, totalCount)
-
+    
+    //  --------------------------------------------------
+    // Event Listeners -----------------------------------
+    //  --------------------------------------------------
+    // update search in table on keyup
     searchFilter.on("keyup", (current) => {
         let value = searchFilter.val().toLowerCase()
-        // unhide all,
-        // search every row,
-        // if it matches the criteria then 
-
-
         tableRows.filter(function() {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
       }).slice(5).remove();
     });
-
-    //  --------------------------------------------------
-    // Event Listeners -----------------------------------
-    //  --------------------------------------------------
-    // length change
+    // entries show change
     showLimit.on("change", () => {
         endRange = showLimit.val()
         updateInfo(tableRows, startRange, endRange, showingFrom, showingTo, totalCount)
         showData(tableBody, startRange, endRange)
-        // every time the length changes, update how many pages there are.
         getPageNumbers(pageNumberDiv, endRange, tableRows.length, 1)
-
         setPageBtnEventListener(tableRows, tableBody, currentPage, showLimit.val(), showingFrom, showingTo, totalCount)
     })
-
+    // header sort change
     $(".header").on("click", (e) => {
         handleSort(`#${$(e.currentTarget).attr("id")}`)
     })
-
     // Sorting function --------------------------------------------------
     const handleSort = (sortMethod) => {
         let sortType = "asc"
@@ -74,7 +61,9 @@ $(document).ready(() => {
         $(`tbody tr`).each((idx, currentRow) => {
             currentRow.style.display = ""
         })
+        // if we are updating the column that is already sorting
         if (sortMethod === sortingMethod) {
+            // change to the opposite of the current sort
             if ($(`${sortMethod} div`).hasClass("sort-asc")) {
                 sortType = "desc"
                 $(".sort-asc").addClass("sort-desc")
@@ -82,16 +71,16 @@ $(document).ready(() => {
             } else {
                 $(".sort-desc").addClass("sort-asc")
                 $(".sort-desc").removeClass("sort-desc")
-
             }
         } else {
+            // this is a new column to sort by
             sortingMethod = sortMethod
             $(".sort-asc").removeClass("sort-asc")
             $(".sort-desc").removeClass("sort-desc")
             $(`${sortMethod} div`).addClass("sort-asc")
         }
 
-        // sort everything
+        // sorting method for each header
         if (sortingMethod === "#header-name") {
             sortName(tableBody, sortType)
         } else if (sortMethod === "#header-position") {
@@ -112,12 +101,9 @@ $(document).ready(() => {
         getPageNumbers(pageNumberDiv, showLimit.val(), tableRows.length, 1)
         // update footer detail
         updateInfo(tableRows, 1, showLimit.val(), showingFrom, showingTo, totalCount)
-
+        // set up event listeners for page numbers
         setPageBtnEventListener(tableRows, tableBody, currentPage, showLimit.val(), showingFrom, showingTo, totalCount)
-
     }
-
-
 })
 
 //  --------------------------------------------------
@@ -139,7 +125,6 @@ const updateInfo = (table, startRange, endRange, from, to, total) => {
     to.html(endRange > table.length ? table.length : endRange)
     total.html(table.length)
 }
-
 const getPageNumbers = (div, showLength, total, activePage) => {
     div.html(`<button id="btn-previous" class="page-btn btn" >Previous</button>`)
     for (let i = 1; i <= Math.ceil(total / showLength); i++) {
@@ -147,7 +132,6 @@ const getPageNumbers = (div, showLength, total, activePage) => {
     }
     div.append(`<button id="btn-next" class="page-btn btn" >Next</button>`)
 }
-
 const setPageBtnEventListener = (table, tableBody, currentPage, tableLength, from, to, total) => {
     $(".page-btn").on("click", (e) => {
         let goToPage = ""
@@ -159,7 +143,6 @@ const setPageBtnEventListener = (table, tableBody, currentPage, tableLength, fro
             goToPage = currentPage - 1
         } else {
             goToPage = parseInt(e.target.innerText)
-
         }
         if (goToPage !== currentPage) {
             // call for page change
