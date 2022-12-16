@@ -9,8 +9,8 @@
     <!-- scripts ---------------------------------------- -->
     <!-- jquery -------------------------------------------------- -->
     <script src="https://code.jquery.com/jquery-3.6.2.min.js"></script>
-    <script src="js/index.js" async defer></script>
-    <script src="js/sorting.js" async defer></script>
+    <script type="text/javascript" src="js/sorting.js" async defer></script>
+    <script type="text/javascript" src="js/index.js" async defer></script>
     <!-- css -------------------------------------------------- -->
     <link rel="stylesheet" href="index.css">
 </head>
@@ -33,7 +33,7 @@
             </div>
             <!-- Search -->
             <div class="data-table-search">
-                <label id="search-label">
+                <label id="search-label"></label>
                     Search:
                     <input id="search" type="search"></label>
                 </label>
@@ -43,7 +43,7 @@
             <thead>
                 <tr>
                     <th><div id="header-name" class="header">Name <div class="filter-arrows-div sort-asc"></div></div></th>
-                    <th><div id="header-position" class="header">Position <div class="filter-arrows-div"></div><span class="arrow-down"></span></span></div></th>
+                    <th><div id="header-position" class="header">Position <div class="filter-arrows-div"></div></div></th>
                     <th><div id="header-office" class="header">Office <div class="filter-arrows-div"></div> </div></th>
                     <th><div id="header-age" class="header">Age <div class="filter-arrows-div"></div> </div></th>
                     <th><div id="header-start" class="header">Start date <div class="filter-arrows-div"></div> </div></th>
