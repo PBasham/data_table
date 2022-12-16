@@ -2,39 +2,40 @@
 $(document).ready(() => {
 
 
-
-    let tableLength = $("#table-length")
+    // search filter  --------------------------------------------------
     let searchFilter = $("#search")
-
+    // current sorting method --------------------------------------------------
+    let sortingMethod = "#header-name"
+    // table --------------------------------------------------
     let table = $("#example")
     let tableBody = $("#example tbody")
-    let exampleTable = $("#example tbody tr")
-
+    let tableRows = $("#example tbody tr")
+    // row limite --------------------------------------------------
+    let showLimit = $("#table-length")
+    let startRange = 1
+    let endRange = showLimit.val()
+    // footer showing detail --------------------------------------------------
     let showingFrom = $("#showingFrom")
     let showingTo = $("#showingTo")
     let totalCount = $("#totalEntries")
-
-    let startRange = 1
-    let endRange = tableLength.val()
+    // current page and page numbers div --------------------------------------------------
     let pageNumberDiv = $("#pageNumberDiv")
     let currentPage = 1
 
 
 
-    let sortingMethod = "#header-name"
 
-
-
+    // first open setup --------------------------------------------------
     // sort,
     sortName(tableBody)
     // filter,
     showData(tableBody, startRange, endRange)
     // update footer detail
-    updateInfo(exampleTable, startRange, endRange, showingFrom, showingTo, totalCount)
+    updateInfo(tableRows, startRange, endRange, showingFrom, showingTo, totalCount)
     // set page numbers
-    getPageNumbers(pageNumberDiv, tableLength.val(), exampleTable.length, currentPage)
-    //
-    setPageBtnEventListener(exampleTable, tableBody, currentPage, tableLength.val(), showingFrom, showingTo, totalCount)
+    getPageNumbers(pageNumberDiv, showLimit.val(), tableRows.length, currentPage)
+    // set up event listeners for pge numbers
+    setPageBtnEventListener(tableRows, tableBody, currentPage, showLimit.val(), showingFrom, showingTo, totalCount)
 
     searchFilter.on("keyup", (current) => {
         let value = searchFilter.val().toLowerCase()
@@ -43,7 +44,7 @@ $(document).ready(() => {
         // if it matches the criteria then 
 
 
-        exampleTable.filter(function() {
+        tableRows.filter(function() {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
       }).slice(5).remove();
     });
@@ -52,14 +53,14 @@ $(document).ready(() => {
     // Event Listeners -----------------------------------
     //  --------------------------------------------------
     // length change
-    tableLength.on("change", () => {
-        endRange = tableLength.val()
-        updateInfo(exampleTable, startRange, endRange, showingFrom, showingTo, totalCount)
+    showLimit.on("change", () => {
+        endRange = showLimit.val()
+        updateInfo(tableRows, startRange, endRange, showingFrom, showingTo, totalCount)
         showData(tableBody, startRange, endRange)
         // every time the length changes, update how many pages there are.
-        getPageNumbers(pageNumberDiv, endRange, exampleTable.length, 1)
+        getPageNumbers(pageNumberDiv, endRange, tableRows.length, 1)
 
-        setPageBtnEventListener(exampleTable, tableBody, currentPage, tableLength.val(), showingFrom, showingTo, totalCount)
+        setPageBtnEventListener(tableRows, tableBody, currentPage, showLimit.val(), showingFrom, showingTo, totalCount)
     })
 
     $(".header").on("click", (e) => {
@@ -108,11 +109,11 @@ $(document).ready(() => {
         // re-hide everything
         showData(tableBody, startRange, endRange)
         // update page number
-        getPageNumbers(pageNumberDiv, tableLength.val(), exampleTable.length, 1)
+        getPageNumbers(pageNumberDiv, showLimit.val(), tableRows.length, 1)
         // update footer detail
-        updateInfo(exampleTable, 1, tableLength.val(), showingFrom, showingTo, totalCount)
+        updateInfo(tableRows, 1, showLimit.val(), showingFrom, showingTo, totalCount)
 
-        setPageBtnEventListener(exampleTable, tableBody, currentPage, tableLength.val(), showingFrom, showingTo, totalCount)
+        setPageBtnEventListener(tableRows, tableBody, currentPage, showLimit.val(), showingFrom, showingTo, totalCount)
 
     }
 
